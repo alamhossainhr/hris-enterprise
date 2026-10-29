@@ -1,0 +1,21 @@
+{% extends 'base/base.html' %}
+{% block page_title %}Upload Vault Document: {{ emp.EmpName }} ({{ emp.EmpCode }}){% endblock %}
+{% block content %}
+<div class='row justify-content-center'>
+    <div class='col-md-7'>
+        <div class='card shadow-sm border-0'>
+            <div class='card-header bg-white py-3'><h6 class='m-0 fw-bold text-dark'><i class='bi bi-cloud-arrow-up-fill text-primary me-2'></i>Upload Employee Document</h6></div>
+            <div class='card-body p-4'>
+                <form method='POST' enctype='multipart/form-data'>
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <div class='d-flex justify-content-end gap-2 mt-4'>
+                        <a href='{% url "employee_profile" emp.EmpKey %}' class='btn btn-outline-secondary'>Cancel</a>
+                        <button type='submit' class='btn btn-primary'>Save Document to Vault</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

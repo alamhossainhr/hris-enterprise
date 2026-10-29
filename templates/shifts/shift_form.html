@@ -1,0 +1,28 @@
+{% extends 'base/base.html' %}
+{% block page_title %}{{ title }}{% endblock %}
+{% block content %}
+<div class='row justify-content-center'>
+    <div class='col-md-8'>
+        <div class='card shadow-sm border-0'>
+            <div class='card-header bg-white py-3'><h6 class='m-0 fw-bold'>{{ title }}</h6></div>
+            <div class='card-body p-4'>
+                <form method='POST'>
+                    {% csrf_token %}
+                    <div class='row g-3'>
+                        {% for field in form %}
+                        <div class='col-md-6 mb-2'>
+                            <label class='form-label small fw-semibold'>{{ field.label }}</label>
+                            {{ field }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class='d-flex justify-content-end gap-2 mt-4'>
+                        <a href='{% url "shift_list" %}' class='btn btn-outline-secondary'>Cancel</a>
+                        <button type='submit' class='btn btn-primary'>Save Shift</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

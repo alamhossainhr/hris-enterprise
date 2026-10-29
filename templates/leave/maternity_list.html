@@ -1,0 +1,33 @@
+{% extends "base/base.html" %}
+{% block page_title %}Bangladesh RMG Maternity Benefit Vault{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-heart-pulse-fill text-danger me-2"></i>Maternity Benefit Ledger (112 Days / 2-Tier Split)</h5>
+    <a href="{% url 'leave_dashboard' %}" class="btn btn-sm btn-outline-secondary">Back to Leaves</a>
+</div>
+<div class="card shadow-sm border-0">
+    <div class="card-body p-0">
+        <table class="table table-hover align-middle mb-0 small">
+            <thead class="table-light">
+                <tr><th>EmpKey</th><th>EDD</th><th>Leave Window (112D)</th><th>Daily Wage</th><th>Total Benefit</th><th>1st Installment (50%)</th><th>2nd Installment (50%)</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+                {% for m in records %}
+                <tr>
+                    <td class="fw-bold">{{ m.EmpKey }}</td>
+                    <td>{{ m.EDD }}</td>
+                    <td>{{ m.LeaveStartDate }} &rarr; {{ m.LeaveEndDate }}</td>
+                    <td>BDT {{ m.AverageDailyWage }}</td>
+                    <td class="fw-bold text-primary">BDT {{ m.TotalBenefitAmount }}</td>
+                    <td>BDT {{ m.FirstInstallmentAmount }}</td>
+                    <td>BDT {{ m.SecondInstallmentAmount }}</td>
+                    <td><span class="badge bg-success">Approved</span></td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="8" class="text-center text-muted py-4">No maternity benefit disbursements recorded.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

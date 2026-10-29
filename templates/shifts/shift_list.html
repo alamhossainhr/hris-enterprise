@@ -1,0 +1,33 @@
+{% extends 'base/base.html' %}
+{% block page_title %}Shift Management & Cross-Midnight Setup{% endblock %}
+{% block content %}
+<div class='d-flex justify-content-between align-items-center mb-4'>
+    <h5 class='fw-bold mb-0 text-dark'><i class='bi bi-clock-history text-primary me-2'></i>Enterprise Shifts Master</h5>
+    <a href='{% url "shift_create" %}' class='btn btn-primary btn-sm'><i class='bi bi-plus-lg me-1'></i> Add Shift</a>
+</div>
+<div class='card shadow-sm border-0'>
+    <div class='card-body p-0'>
+        <table class='table table-hover align-middle mb-0'>
+            <thead class='table-light small'>
+                <tr><th>Shift Code</th><th>Shift Name</th><th>Timing Window</th><th>Grace / Late</th><th>Cross Midnight</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+                {% for shift in shifts %}
+                <tr>
+                    <td class='fw-bold'>{{ shift.ShiftCode }}</td>
+                    <td>{{ shift.ShiftName }}</td>
+                    <td><strong>{{ shift.StartTime }}</strong> &rarr; <strong>{{ shift.EndTime }}</strong></td>
+                    <td><span class='badge bg-light text-dark border'>Grace: {{ shift.GraceInMinutes }}m</span> <span class='badge bg-warning-subtle text-warning border'>Late: {{ shift.LateThresholdMinutes }}m</span></td>
+                    <td>
+                        {% if shift.IsCrossMidnight %}<span class='badge bg-dark'>Yes (Rolls D+1)</span>{% else %}<span class='badge bg-light text-muted border'>Standard Day</span>{% endif %}
+                    </td>
+                    <td>{% if shift.IsActive %}<span class='badge bg-success'>Active</span>{% else %}<span class='badge bg-secondary'>Inactive</span>{% endif %}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan='6' class='text-center py-4 text-muted'>No shifts configured yet.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

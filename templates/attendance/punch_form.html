@@ -1,0 +1,28 @@
+{% extends 'base/base.html' %}
+{% block page_title %}Manual Biometric Raw Punch Entry{% endblock %}
+{% block content %}
+<div class='row justify-content-center'>
+    <div class='col-md-6'>
+        <div class='card shadow-sm border-0'>
+            <div class='card-header bg-white py-3'><h6 class='m-0 fw-bold'><i class='bi bi-fingerprint text-info me-2'></i>Ingest Biometric Raw Punch</h6></div>
+            <div class='card-body p-4'>
+                <form method='POST'>
+                    {% csrf_token %}
+                    <div class='mb-3'>
+                        <label class='form-label small fw-semibold'>Employee Code</label>
+                        <input type='text' name='emp_code' placeholder='e.g. EMP001' class='form-control' required>
+                    </div>
+                    <div class='mb-4'>
+                        <label class='form-label small fw-semibold'>Punch Date & Time</label>
+                        <input type='datetime-local' name='punch_datetime' class='form-control' required>
+                    </div>
+                    <div class='d-flex justify-content-end gap-2'>
+                        <a href='{% url "attendance_query_console" %}' class='btn btn-outline-secondary'>Cancel</a>
+                        <button type='submit' class='btn btn-primary'>Ingest Punch</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

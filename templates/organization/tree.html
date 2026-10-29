@@ -1,0 +1,65 @@
+{% extends 'base/base.html' %}
+{% block page_title %}Organization Master & Structure{% endblock %}
+{% block content %}
+<div class='d-flex justify-content-between align-items-center mb-4'>
+    <h5 class='fw-bold mb-0 text-dark'><i class='bi bi-diagram-3-fill text-primary me-2'></i>Enterprise Structure Hierarchy</h5>
+    <div class='d-flex gap-2'>
+        <a href='{% url "company_create" %}' class='btn btn-sm btn-primary'><i class='bi bi-plus-lg me-1'></i> Add Company</a>
+        <a href='{% url "department_create" %}' class='btn btn-sm btn-outline-primary'><i class='bi bi-plus-lg me-1'></i> Add Department</a>
+        <a href='{% url "designation_create" %}' class='btn btn-sm btn-outline-secondary'><i class='bi bi-plus-lg me-1'></i> Add Designation</a>
+    </div>
+</div>
+<div class='row g-4'>
+    <div class='col-md-7'>
+        <div class='card shadow-sm border-0'>
+            <div class='card-header bg-white py-3'><h6 class='m-0 fw-bold'>Companies & Departments</h6></div>
+            <div class='card-body'>
+                {% for ent in enterprises %}
+                    <div class='fw-bold text-primary mb-2'><i class='bi bi-globe me-2'></i>{{ ent.EnterpriseName }} ({{ ent.EnterpriseCode }})</div>
+                    <div class='ms-4'>
+                    {% for comp in ent.companies.all %}
+                        <div class='fw-semibold text-dark mt-2'><i class='bi bi-buildings text-secondary me-2'></i>{{ comp.CompanyName }} [{{ comp.CompanyCode }}]</div>
+                        <ul class='list-unstyled ms-4 mt-1 border-start ps-3'>
+                        {% for dept in comp.departments.all %}
+                            <li class='py-1 text-muted small'><i class='bi bi-folder2-open me-2 text-warning'></i><strong>{{ dept.DepartmentName }}</strong> ({{ dept.DepartmentCode }})
+                                {% if dept.sections.all %}
+                                    <span class='badge bg-light text-secondary ms-2'>{{ dept.sections.count }} Sections</span>
+                                {% endif %}
+                            </li>
+                        {% empty %}
+                            <li class='text-muted small ps-2'>No departments configured.</li>
+                        {% endfor %}
+                        </ul>
+                    {% empty %}
+                        <p class='text-muted small ps-2'>No companies registered under this enterprise.</p>
+                    {% endfor %}
+                    </div>
+                {% empty %}
+                    <p class='text-muted py-3'>No enterprise structures configured yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class='col-md-5'>
+        <div class='card shadow-sm border-0'>
+            <div class='card-header bg-white py-3'><h6 class='m-0 fw-bold'>Designations & Grades</h6></div>
+            <div class='card-body p-0'>
+                <table class='table table-hover mb-0 align-middle small'>
+                    <thead class='table-light'><tr><th>Code</th><th>Designation</th><th>Grade</th></tr></thead>
+                    <tbody>
+                    {% for desig in designations %}
+                        <tr>
+                            <td class='fw-bold'>{{ desig.DesignationCode }}</td>
+                            <td>{{ desig.DesignationName }}</td>
+                            <td><span class='badge bg-info text-dark'>{{ desig.Grade.GradeName|default:'Unassigned' }}</span></td>
+                        </tr>
+                    {% empty %}
+                        <tr><td colspan='3' class='text-center text-muted py-3'>No designations registered.</td></tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
